@@ -7,6 +7,10 @@ ltrim
 length
 replace
 concat
+mod
+date("now")
+time("now")
+
 
 conditional operators 
 
@@ -18,6 +22,14 @@ we can perform multiple stage ordering
 equalit ors can be converted to in 
 inequality ands can be converted to not in  
 we can extract the month, year and date from the datetime object using strftime function
+we can clone tables using the as operator 
+we can find intersection 
+we can find union 
+we can find exception  
+we can print current date and time  
+we can limit 
+we can use limit with skip
+
 
 
 
@@ -25,6 +37,12 @@ we can extract the month, year and date from the datetime object using strftime 
 type of questions:
 simple aggregation function based questions
 conditional questions
-grouping based questions  
+grouping based questions 
+join based questions
+limit based questions
+sub-queries based question  
+
+
+
 
 
