@@ -63,3 +63,51 @@ where first_name not in ("Vipul", "Satish");
 select *
 from Worker 
 where department like "Admin%";
+
+select * 
+from Worker 
+where (
+    first_name like "%a%"
+);
+
+select * 
+from Worker 
+where (
+    first_name like "%a"
+);
+
+select * 
+from Worker 
+where (
+    first_name like "%h" 
+    and  
+    length(first_name)=6  
+);
+
+select * 
+from Worker 
+where (
+    salary between 100000 and 500000
+);
+
+select * 
+from Worker 
+where (
+    strftime("%m",Joining_Date)=="02"
+    and 
+    strftime("%y",Joining_Date)=="2014"
+);
+
+select department, count(Worker_ID)
+from Worker
+where (
+    department="Admin"
+);
+
+select concat(first_name," ",last_name) as full_name 
+from Worker 
+where (
+    salary >= 50000 
+    and 
+    salary <= 100000
+);
