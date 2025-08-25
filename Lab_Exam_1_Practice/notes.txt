@@ -43,6 +43,7 @@ join based questions
 limit based questions
 sub-queries based question  
 question based on custom aggregation functions, using select 
+special questions (like number pair reversals)
 
 
 
