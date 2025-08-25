@@ -276,8 +276,77 @@ select *
 from worker 
 limit 0,1;
 
+--44
+select * 
+from worker 
+where (
+    worker_ID > (
+        select count(worker_ID)-5 
+        from worker
+    )
+);
 
+(select * 
+from worker 
+order by worker_ID desc
+limit 5)
+order by worker_ID;
 
+--45 
+select department, (
+    select concat(first_name," ",last_name)
+    from worker
+    order by salary desc
+    limit 0,1
+)
+from worker 
+group by department;
+
+-- cannot understood the joins implementation
+
+--46 
+select distinct salary 
+from worker 
+order by salary desc
+limit 3;
+
+-- could not understand the corelated subquery 
+
+--47 
+select * 
+from (
+    select distinct salary 
+    from worker 
+    order by salary asc 
+    limit 3
+)
+order by salary desc;
+
+-- could not understand the corelated subquery
+
+--48  
+select distinct salary 
+from worker 
+order by salary desc
+limit 4,1;
+
+-- could not understand the corelated subquery
+
+--49 
+select department, sum(salary) as total_salary
+from worker 
+group by department
+order by total_salary desc; 
+
+--50 
+select concat(first_name," ",last_name) as full_name, salary
+from worker 
+where (
+    salary = (
+        select max(salary)
+        from worker
+    )
+);
 
 
 

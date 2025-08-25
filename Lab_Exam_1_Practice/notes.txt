@@ -29,6 +29,7 @@ we can find exception
 we can print current date and time  
 we can limit 
 we can use limit with skip
+we can define custom aggregation functions using select  
 
 
 
@@ -41,6 +42,7 @@ grouping based questions
 join based questions
 limit based questions
 sub-queries based question  
+question based on custom aggregation functions, using select 
 
 
 
