@@ -142,4 +142,3 @@ where sid in (
 delete from 
 Enrolled 
 where cid = "MAL251";
-

@@ -1,0 +1,23 @@
+Upper 
+Lower 
+substring
+instr
+rtrim 
+ltrim
+length
+replace
+concat
+
+
+group by sorts the output
+alias is used to create new tables and columns
+we can perform multiple stage ordering 
+equalit ors can be converted to in 
+inequality ands can be converted to not in  
+
+
+
+
+type of questions:
+simple aggregation function based questions
+
