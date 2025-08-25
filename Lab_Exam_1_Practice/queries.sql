@@ -111,3 +111,23 @@ where (
     and 
     salary <= 100000
 );
+
+select department, count(Worker_ID) as number_of_workers 
+from Worker
+group by department
+order by number_of_workers desc;
+
+select * 
+from Worker as w 
+inner join Title as t 
+on w.Worker_ID = t.Worker_Ref_ID
+where t.Worker_Title="Manager";
+
+select Worker_Title, count(Worker_Ref_ID) as number_of_workers
+from Title
+group by Worker_Title
+having (
+    number_of_workers > 1
+);
+
+

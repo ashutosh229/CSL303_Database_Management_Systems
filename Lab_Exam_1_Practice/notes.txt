@@ -25,4 +25,6 @@ we can extract the month, year and date from the datetime object using strftime 
 type of questions:
 simple aggregation function based questions
 conditional questions
+grouping based questions  
+
 
