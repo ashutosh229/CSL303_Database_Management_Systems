@@ -1,0 +1,82 @@
+[
+  {
+    "question_number": 1,
+    "query": "db.students.insertOne({\n  _id: 106,\n  name: \"Frank\",\n  major: \"EE\",\n  gpa: 3.1,\n  courses_enrolled: []\n})"
+  },
+  {
+    "question_number": 2,
+    "query": "db.courses.insertMany([\n  {\n    _id: \"MEL110\",\n    title: \"Thermodynamics\",\n    credits: 3,\n    instructor_id: 4\n  },\n  {\n    _id: \"BIO101\",\n    title: \"Intro to Biology\",\n    credits: 3,\n    instructor_id: 4\n  }\n])"
+  },
+  {
+    "question_number": 3,
+    "query": "db.students.find({\n  major: \"CS\"\n})"
+  },
+  {
+    "question_number": 4,
+    "query": "db.courses.find(\n  { credits: 4 },\n  { _id: 0, title: 1, instructor_id: 1 }\n)"
+  },
+  {
+    "question_number": 5,
+    "query": "db.students.find(\n  { gpa: { $gte: 3.5 } }\n)"
+  },
+  {
+    "question_number": 6,
+    "query": "db.instructors.find(\n  { rank: { $in: [\"Professor\", \"Associate Professor\"] } }\n)"
+  },
+  {
+    "question_number": 7,
+    "query": "db.students.find(\n  { \"courses_enrolled.cid\": \"CSL303\" },\n  { _id: 0, name: 1, major: 1 }\n)"
+  },
+  {
+    "question_number": 8,
+    "query": "db.students.find(\n  { \"courses_enrolled.grade\": \"A\" },\n  { _id: 0, name: 1 }\n)"
+  },
+  {
+    "question_number": 9,
+    "query": "db.students.find(\n  { courses_enrolled: { $size: 2 } }\n)"
+  },
+  {
+    "question_number": 10,
+    "query": "db.courses.find(\n  { $or: [ { instructor_id: { $exists: false } }, { instructor_id: null } ] }\n)"
+  },
+  {
+    "question_number": 11,
+    "query": "db.students.find(\n  { courses_enrolled: { \n      $all: [\n        { $elemMatch: { cid: \"CSL101\" } },\n        { $elemMatch: { cid: \"CSL211\" } }\n      ]\n    }\n  }\n)"
+  },
+  {
+    "question_number": 12,
+    "query": "db.students.updateMany(\n  { major: \"CS\" },\n  { $set: { major: \"Computer Science\" } }\n)"
+  },
+  {
+    "question_number": 13,
+    "query": "db.students.updateOne(\n  { _id: 101 },\n  { $push: { courses_enrolled: { cid: \"CSL211\", grade: \"A\" } } }\n)"
+  },
+  {
+    "question_number": 14,
+    "query": "db.students.updateMany(\n  { major: \"EE\" },\n  { $inc: { gpa: 0.2 } }\n)"
+  },
+  {
+    "question_number": 15,
+    "query": "db.students.updateOne(\n  { _id: 102 },\n  { $set: { \"courses_enrolled.$[elem].grade\": \"A\" } },\n  { arrayFilters: [ { \"elem.cid\": \"EEL201\" } ] }\n)"
+  },
+  {
+    "question_number": 16,
+    "query": "db.courses.deleteOne(\n  { _id: \"MEL110\" }\n)"
+  },
+  {
+    "question_number": 17,
+    "query": "db.students.deleteOne(\n  { _id: 104 }\n)"
+  },
+  {
+    "question_number": 18,
+    "query": "db.students.updateOne(\n  { _id: 101 },\n  { $pull: { courses_enrolled: { cid: \"CSL101\" } } }\n)"
+  },
+  {
+    "question_number": 19,
+    "query": "db.students.aggregate([\n  {\n    $group: {\n      _id: \"$major\",\n      avgGpa: { $avg: \"$gpa\" }\n    }\n  }\n])"
+  },
+  {
+    "question_number": 20,
+    "query": "db.courses.aggregate([\n  {\n    $group: {\n      _id: \"$instructor_id\",\n      courseCount: { $sum: 1 }\n    }\n  }\n])"
+  }
+]
