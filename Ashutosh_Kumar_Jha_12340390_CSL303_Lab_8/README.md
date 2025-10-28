@@ -1,13 +1,18 @@
-# Lab 8 — Programming Language with DBMS (Solution)
+# Lab 8 — PostgreSQL + Python Application Setup Guide
 
-## Contents
-- `main.py` — Python script implementing all required tasks (DDL, DML, queries, menu).
-- `requirements.txt` — Python dependencies.
-- `README.md` — this file.
+## 🐍 Setting up Python Virtual Environment
 
-## Prerequisites
-- Docker installed.
-- Dockerized PostgreSQL running (example):
 ```bash
-docker pull postgres
-docker run --name pg_lab -e POSTGRES_PASSWORD=admin123 -p 5432:5432 -d postgres
+# Create a virtual environment
+python -m venv venv
+
+# Activate the environment
+# For Windows:
+venv\Scripts\activate
+# For Linux / macOS:
+source venv/bin/activate
+```
+
+## 🧰 Installing Dependencies
+
+
