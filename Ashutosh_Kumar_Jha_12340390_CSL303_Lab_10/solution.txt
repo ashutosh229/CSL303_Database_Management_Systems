@@ -1,0 +1,155 @@
+1. Advanced SQL — Recursive CTE for Organizational Hierarchy  
+------------------------------------------------------------  
+WITH RECURSIVE org_chart AS (
+    -- Base case: CEO (no manager)
+    SELECT 
+        employee_id,
+        employee_name,
+        manager_id,
+        0 AS level
+    FROM employees
+    WHERE manager_id IS NULL
+
+    UNION ALL
+
+    -- Recursive case: employees reporting to previous level
+    SELECT 
+        e.employee_id,
+        e.employee_name,
+        e.manager_id,
+        oc.level + 1 AS level
+    FROM employees e
+    INNER JOIN org_chart oc 
+        ON e.manager_id = oc.employee_id
+)
+SELECT * 
+FROM org_chart
+ORDER BY level, employee_id;  
+
+------------------------------------------------------------------------------- 
+
+2. Advanced SQL — Window Functions for 7-day Moving Average + Percentage Change
+-------------------------------------------------------------------------------  
+SELECT
+    product_id,
+    sale_date,
+    sale_amount,
+    
+    -- 7-day moving average
+    AVG(sale_amount) OVER (
+        PARTITION BY product_id
+        ORDER BY sale_date
+        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ) AS moving_avg_7_days,
+
+    -- Percentage change from previous day
+    (sale_amount - LAG(sale_amount) OVER (
+        PARTITION BY product_id ORDER BY sale_date
+    )) 
+    / NULLIF(LAG(sale_amount) OVER (
+        PARTITION BY product_id ORDER BY sale_date
+    ), 0) * 100 AS pct_change_from_prev_day
+
+FROM sales
+ORDER BY product_id, sale_date;
+ 
+-------------------------------------------------------------------------------------  
+
+3. Indexing — Optimizing the Slow Query
+---------------------------------------
+Indexes which should be created:    
+
+A. On customers(customer_segment, customer_id)  
+
+CREATE INDEX idx_customers_segment_id 
+ON customers(customer_segment, customer_id);
+
+We filter by customer_segment
+Then join using customer_id
+Composite index allows fast filtering + join  
+
+B. On products(product_category, product_id)   
+
+CREATE INDEX idx_products_category_id
+ON products(product_category, product_id);  
+
+Filter on product_category
+Then join via product_id 
+
+C. On orders(order_date, customer_id, product_id)  
+
+CREATE INDEX idx_orders_date_customer_product
+ON orders(order_date, customer_id, product_id);    
+
+For date filtering 
+For the purpose of fast join   
+
+Covering Index Explanation:  
+A covering index is an index that contains all the columns required to satisfy a query, so the database never needs to read the
+table itself. 
+
+For example, on orders, we select:
+order_date
+customer_id
+product_id
+
+and we filter on order_date.   
+
+So this covering index is perfect:
+CREATE INDEX idx_orders_cover
+ON orders(order_date, customer_id, product_id);
+  
+Benefit:
+The DB can answer the entire part of the query just from the index and therefore no table lookup is required and huge speed boost 
+is got.  
+
+-------------------------------------------------------------------------  
+
+4. MongoDB Aggregation Pipeline
+------------------------------- 
+db.articles.aggregate([
+    // filtering
+    { 
+        $match: { views: { $gt: 1000 } } 
+    },
+    // unwind tags
+    { 
+        $unwind: "$tags" 
+    },
+    // unwind comments to access likes
+    { 
+        $unwind: "$comments" 
+    },
+    // group by tag
+    {
+        $group: {
+            _id: "$tags",
+            avg_comments: { $avg: 1 },   // each unwinded comment equals 1 count
+            avg_likes: { $avg: "$comments.likes" }
+        }
+    },
+    // sort for providing the final output
+    {
+        $sort: { avg_likes: -1 }
+    }
+]); 
+
+------------------------------------------------------------------------------  
+
+5. MongoDB — Geospatial Query  
+-----------------------------  
+A. Create 2dsphere Index  
+db.restaurants.createIndex({ location: "2dsphere" });
+ 
+B. Find Restaurants Within 5 km  
+db.restaurants.find({
+    location: {
+        $near: {
+            $geometry: {
+                type: "Point",
+                coordinates: [-73.98, 40.77]
+            },
+            $maxDistance: 5000
+        }
+    }
+});
